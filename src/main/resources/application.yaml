@@ -1,0 +1,56 @@
+# Spring 설정
+spring:
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:${env.primary.db.name}://${env.primary.db.host}:${env.primary.db.port}/fsswms?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&allowMultiQueries=true
+      username: ${env.primary.db.username}
+      password: ${env.primary.db.password}
+      maximum-pool-size: 4
+      minimum-idle: 1
+      connection-timeout: 60000
+      max-lifetime: 600000
+  jwt:
+    secret: "dGVzdC1zZWNyZXQta2V5LXByb2plY3QtZGV2LTIwMjU="
+    valid-duration: 1d
+    verify-secret: "jwt.verify.secret"
+    address-waiting-verification-duration: 13d
+    verify-warning-duration: 6d
+  # Redis 설정
+  data:
+    redis:
+      host: ${env.redis.host}
+      port: ${env.redis.port}
+
+# Prometheus 설정
+management:
+  prometheus:
+    metrics:
+      export:
+        enabled: false
+
+# timeout 설정
+server:
+  port: 8080
+  tomcat:
+    connection-timeout: 90000
+
+# MyBatis 설정
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# 로깅 설정
+logging:
+  config: classpath:log4j2.xml
+
+log4jdbc:
+  drivers: com.mysql.cj.jdbc.Driver
+
+# Jasypt 암호화 설정
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ZnNzd21zMTIzNDU2Nzg5MGZzc3dtczEyMzQ1Njc4OTA=
+    algorithm: PBEWithMD5AndDES

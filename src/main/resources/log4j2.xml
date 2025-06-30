@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+
+    <!-- 변수 설정 -->
+    <Properties>
+        <Property name="LAYOUT_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%-5level} [%thread] %clr{[%logger{1.}]}{cyan} : %msg [traceID=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags}]%n</Property>
+    </Properties>
+
+    <!-- Appender, Layout 설정 -->
+    <Appenders>
+        <!-- 콘솔에 찍을 로그 -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LAYOUT_PATTERN}"/>
+        </Console>
+    </Appenders>
+
+    <!-- Logger 설정 -->
+    <Loggers>
+        <!-- WARN LEVEL (INFO 레벨보다 정보가 덜 필요한 경우) -->
+        <Logger name="jdbc.audit" level="ERROR"/>
+        <Logger name="jdbc.connection" level="ERROR"/>
+        <Logger name="jdbc.sqlonly" level="ERROR"/>
+        <Logger name="jdbc.resultset" level="ERROR"/>
+
+        <Root level="INFO">
+            <AppenderRef ref="console" level="DEBUG"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yw.auth.domain.user.repository.mapper.UserMapper">
+
+    <select id="getUserByLoginIdAndPassword" resultType="UserLoginVO">
+        SELECT
+            FN_COM_GET_DECRYPT(TU.LOGIN_ID) AS LOGIN_ID
+             , TU.USER_ID
+             , FN_COM_GET_DECRYPT(TU.USER_NM) AS USER_NM
+             , FN_WORK_SHOP_NM(TU.USER_DIV, TU.WORK_SHOP_CD) AS ROLE
+        FROM TB_USER AS TU
+                 LEFT JOIN tb_service_apply TSA ON TSA.CST_CD = TU.WORK_SHOP_CD
+                 LEFT JOIN tb_cst tc ON TU.WORK_SHOP_CD = tc.CST_CD
+                 LEFT JOIN tb_wh tw ON TU.WORK_SHOP_CD = tw.WH_CD
+        WHERE TU.USE_YN = 'Y'
+          AND TU.LOGIN_ID = FN_COM_GET_ENCRYPT(LOWER(#{userId}))
+          AND TU.PS_WD = #{userPassword}
+    </select>
+</mapper>
